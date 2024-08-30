@@ -6,3 +6,5 @@ import time
 import random
 
 
+class Level:
+    def __init__():
