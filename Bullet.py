@@ -8,3 +8,7 @@ import random
 class Bullet:
     def __init__(self, element):
         self.element = element
+
+
+
+#pew pew
