@@ -11,7 +11,7 @@ class Level:
         self.levelNum = levelNum
         fileName = "data"
         file = open(fileName, "r")
-        for i in range(levelNum-1)
+        for i in range(levelNum-1):
             file.readline()
         List = file.readLine().split()
         self.image = List[0]
