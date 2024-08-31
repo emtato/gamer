@@ -29,7 +29,7 @@ pygame.display.set_caption("qwack")
 # level selector functions
 def level1():
     print("Level 1 selected")
-
+    loadLevel(1,2,3,4,5)
 
 def level2():
     print("Level 2 selected")
@@ -37,6 +37,19 @@ def level2():
 
 def level3():
     print("Level 3 selected")
+
+
+
+#
+# -----------------------------------------------------------------------------------------------------------------
+#
+
+#loading the levels
+def loadLevel(level, img, xpos, ypos, bul):
+    for i in range(0, 255, 14): #fade to white since maze is in (vomit) light mode
+        Window.fill((i, i, i))
+        pygame.display.flip()
+        clock.tick(20)
 
 
 #
@@ -100,7 +113,7 @@ def main():
                         Thus, we use a callback attribute in the Button class. (level1, level2... during initialization above)
                         This attribute stores a reference to the function that should be executed when the button is pressed..
                         '''
-                        button.tick = 120
+                        button.tick = 20
 
         mouse_pos = pygame.mouse.get_pos()
 
