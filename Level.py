@@ -7,7 +7,7 @@ import random
 
 
 class Level:
-    def __init__(self, levelNum, imageName, playerX, playerY, bullets):
+    def __init__(self, levelNum):
         self.levelNum = levelNum
         fileName = "data"
         file = open(fileName, "r")

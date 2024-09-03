@@ -5,7 +5,7 @@ import pygame
 import time
 import random
 
-
+import Level
 import Button
 
 clock = pygame.time.Clock()
@@ -52,6 +52,8 @@ def loadLevel(level, img, xpos, ypos, bul):
         Window.fill((i, i, i))
         pygame.display.flip()
         clock.tick(20)
+        l = Level()
+
 
 #
 # -----------------------------------------------------------------------------------------------------------------
