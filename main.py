@@ -5,7 +5,6 @@ import pygame
 import time
 import random
 
-from numpy.ma.core import count
 
 import Button
 
@@ -25,6 +24,7 @@ pygame.display.set_caption("qwack")
 #
 # -----------------------------------------------------------------------------------------------------------------
 #
+
 
 # level selector functions
 def level1():
