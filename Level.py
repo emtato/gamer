@@ -5,7 +5,7 @@ import pygame
 import time
 import random
 
-
+from main import Window, clock, loadLevel
 
 
 class Level:
@@ -16,7 +16,7 @@ class Level:
         for i in range(levelNum + 1):
             file.readline()
         List = file.readline().split()
-        self.image = List[0]
+        self.leveln = List[0]
         self.playerX = List[1]
         self.playerY = List[2]
         bulletData = List[3]
@@ -28,13 +28,19 @@ class Level:
         self.endX = List[5]
         self.endY = List[6]
 
+
+
+
+
     def printData(self):
-        print(self.image)
+        print(self.leveln)
         print(self.playerX)
         print(self.playerY)
         print(self.bullets)
         print(self.l)
         print(self.endX)
         print(self.endY)
+        loadLevel() #activate the loading screen sequence fade to white
+
 
 
