@@ -45,13 +45,12 @@ def level3():
 # -----------------------------------------------------------------------------------------------------------------
 #
 
-#loading the levels
-def loadLevel(level, img, xpos, ypos, bul):
+#loading screen
+def loadLevel():
     for i in range(0, 255, 14): #fade to white since maze is in (vomit) light mode
         Window.fill((i, i, i))
         pygame.display.flip()
         clock.tick(20)
-        lol = Level.Level()
 
 
 #
