@@ -7,16 +7,15 @@ import random
 
 
 class Level:
-    def __init__(self, levelNum, imageName, playerX, playerY, bullets):
+    def __init__(self, levelNum):
         self.levelNum = levelNum
         fileName = "data"
         file = open(fileName, "r")
-        for i in range(levelNum-1):
+        for i in range(levelNum+2):
             file.readline()
-        List = file.readLine().split()
-        self.image = List[0]
+        List = (file.readLine()).split()
+        self.imageName = List[0]
         self.playerX = List[1]
         self.playerY = List[2]
-
-
-
+        self.bullets = List[3]
+        self.
