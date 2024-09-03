@@ -5,9 +5,6 @@ import pygame
 import time
 import random
 
-
-
-
 class Level:
     def __init__(self, levelNum):
         self.levelNum = levelNum
