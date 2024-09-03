@@ -2,13 +2,14 @@
 # Created by Emilia and Amanda on 2024-08-30
 import sys
 import pygame
+import pygame.Color
 import time
 import random
 
 class Bullet:
     BULLET_SPEED = 10
     BULLET_RADIUS = 5
-    COLOURS = [Color(r, g, b),Color(r, g, b),Color(r, g, b),Color(r, g, b),[],[],[]]
+    COLOURS = [Color(100, 100, 100),Color(r, g, b),Color(r, g, b),Color(r, g, b),Color(r, g, b),Color(r, g, b),Color(r, g, b)]
     def __init__(self, element, x, y):
         self.element = element
         self.colour = self.COLOURS[element]
@@ -21,8 +22,6 @@ class Bullet:
 
     def draw(self, screen):
         pygame.draw.circle(screen, )
-
-hi
 
 
 
