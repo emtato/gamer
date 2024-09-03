@@ -15,7 +15,7 @@ class Level:
         file = open(fileName, "r")
         for i in range(levelNum + 1):
             file.readline()
-        List = file.readLine().split()
+        List = file.readline().split()
         self.image = List[0]
         self.playerX = List[1]
         self.playerY = List[2]
