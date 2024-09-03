@@ -1,3 +1,3 @@
 format for data
-imgNum, playerx, playery, bullets (index 0-7, norm, pyr, hyd, geo, dend, elec, cry, anem), obstacles (element_xpos_ypos) destinationX destinationY
+imgNum, playerx, playery, bullets (index 0-7, norm, pyr, hyd, geo, dend, elec, cry, anem), obstacles (element_xpos_ypos until theres no more _) destinationX destinationY
 1 50 50 41000321 1_300_400
