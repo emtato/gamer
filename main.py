@@ -29,16 +29,15 @@ pygame.display.set_caption("qwack")
 # level selector functions
 def level1():
     print("Level 1 selected")
-    loadLevel(1,2,3,4,5) #encode the specific level details (image xpos ypos here)
+    lol = Level.Level(1)
+    lol.printData()
 
 def level2():
     print("Level 2 selected")
-    loadLevel(1,2,3,4,5) #encode the specific level details (image xpos ypos here)
 
 
 def level3():
     print("Level 3 selected")
-    loadLevel(1,2,3,4,5) #encode the specific level details (image xpos ypos here)
 
 
 
@@ -52,7 +51,7 @@ def loadLevel(level, img, xpos, ypos, bul):
         Window.fill((i, i, i))
         pygame.display.flip()
         clock.tick(20)
-        l = Level()
+        lol = Level.Level()
 
 
 #
