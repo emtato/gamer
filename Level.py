@@ -22,7 +22,7 @@ class Level:
         obstacles = List[4].split('_')
         self.l = []
         for i in range(len(obstacles)//3):
-            l.append([obstacles[i*3],obstacles[i*3+1],obstacles[i*3+2]])
+            self.l.append([obstacles[i*3],obstacles[i*3+1],obstacles[i*3+2]])
         self.endX = List[5]
         self.endY = List[6]
 
