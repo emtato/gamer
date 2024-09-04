@@ -7,18 +7,23 @@ import random
 
 class Bullet:
     SPEED = 10
-    RADIUS = 5
+    RADIUS = 20
     COLOURS = [(190,190,190)]
     def __init__(self, element, x, y):
         self.element = element
         self.colour = self.COLOURS[element]
         self.x = x
         self.y = y
-        self.speedX = 0
-        self.speedY = 0
+        self.speedX = self.SPEED
+        self.speedY = self.SPEED
+
+    def move(self):
+        if not self.collision():
+            self.x += self.speedX
+            self.y += self.speedY
 
     def collision(self):
-        return True
+        return False
     def draw(self, screen):
         pygame.draw.circle(screen, self.colour, (self.x, self.y),self.RADIUS)
 

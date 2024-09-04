@@ -7,6 +7,7 @@ import random
 
 import Level
 import Button
+import Bullet
 global levela
 clock = pygame.time.Clock()
 #
@@ -138,7 +139,8 @@ def main():
                     button.color = (100,100,100) #temporary darker button to confirm you clicked button
                     button.draw(Window)
 
-
+        bullet = Bullet.Bullet(0,400,400)
+        bullet.draw(Window)
         pygame.draw.circle(Window, 'grey', [600, 600], 30)
         if gamemode <= 0:
             rendertext()  # Render main menu text and subtitle. usually do this last otherwise might cause artifacts/flickering
