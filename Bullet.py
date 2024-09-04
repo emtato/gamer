@@ -6,7 +6,7 @@ import time
 import random
 
 class Bullet:
-    SPEED = 10
+    SPEED = 20
     RADIUS = 20
     COLOURS = [(190,190,190)]
     def __init__(self, element, x, y):
@@ -22,6 +22,8 @@ class Bullet:
             self.x += self.speedX
             self.y += self.speedY
 
+    def react(self,colour):
+        return 0
     def collision(self):
         return False
     def draw(self, screen):
