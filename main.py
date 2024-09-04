@@ -7,7 +7,7 @@ import random
 
 import Level
 import Button
-
+global levela
 clock = pygame.time.Clock()
 #
 # -----------------------------------------------------------------------------------------------------------------
@@ -30,6 +30,7 @@ pygame.display.set_caption("qwack")
 def level1():
     print("Level 1 selected")
     lol = Level.Level(1)
+    levela = 1
     lol.printData()
 
 def level2():
@@ -97,37 +98,50 @@ def rendertext():
 def main():
     clock = pygame.time.Clock()  # Initialize a clock to manage the frame rate
     run = True
+    gamemode = 0
     while run:
-        Window.fill('BLACK')
+        if gamemode <= 0:
+            Window.fill('BLACK')
 
         for event in pygame.event.get():  # Process all events in the event queue
             if event.type == pygame.QUIT:  # If the close button is clicked
                 run = False
                 break
+            if gamemode <= 0:
+                for button in buttons:  # Check each button for clicks
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        if button.is_clicked(event):  # is it?
+                            gamemode = 1
+                            button.callback()  # if button is pressed, button.callback (from button class, callback is an attribute/property)
+                            '''in this case, we defined multiple buttons that should execute different things (levels) but since were using
+                            the same button press checker function, its hard to determine which function to execute IF the button is pressed.
+                            Thus, we use a callback attribute in the Button class. (level1, level2... during initialization above)
+                            This attribute stores a reference to the function that should be executed when the button is pressed..
+                            '''
+                            button.tick = 20 #set the greyed out timer
+        #lala= Level.Level(levela)
+        if gamemode == 1:
+            car = pygame.image.load('testimg.jpeg')
+            Window.blit(car, (100,100))
 
-            for button in buttons:  # Check each button for clicks
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    if button.is_clicked(event):  # is it?
-                        button.callback()  # if button is pressed, button.callback (from button class, callback is an attribute/property)
-                        '''in this case, we defined multiple buttons that should execute different things (levels) but since were using
-                        the same button press checker function, its hard to determine which function to execute IF the button is pressed.
-                        Thus, we use a callback attribute in the Button class. (level1, level2... during initialization above)
-                        This attribute stores a reference to the function that should be executed when the button is pressed..
-                        '''
-                        button.tick = 20
 
         mouse_pos = pygame.mouse.get_pos()
 
-        for button in buttons:
-            if button.tick == 0: #when tick = 0, it means button not pressed. so it colors it grey for hover
-                button.is_hovered(mouse_pos)  # Update button hover state based on mouse position
-                button.draw(Window)
-            else:
-                button.tick-=1 #tick isnt 0 so it counts down a timer until it becomes 0 to resume the normal color.
-                button.color = (100,100,100) #temporary darker button to confirm you clicked button
-                button.draw(Window)
 
-        rendertext()  # Render main menu text and subtitle. usually do this last otherwise might cause artifacts/flickering
+        if gamemode <= 0:
+            for button in buttons:
+                if button.tick == 0: #when tick = 0, it means button not pressed. so it colors it grey for hover
+                    button.is_hovered(mouse_pos)  # Update button hover state based on mouse position
+                    button.draw(Window)
+                else:
+                    button.tick-=1 #tick isnt 0 so it counts down a timer until it becomes 0 to resume the normal color.
+                    button.color = (100,100,100) #temporary darker button to confirm you clicked button
+                    button.draw(Window)
+
+
+        pygame.draw.circle(Window, 'grey', [600, 600], 30)
+        if gamemode <= 0:
+            rendertext()  # Render main menu text and subtitle. usually do this last otherwise might cause artifacts/flickering
         pygame.display.flip()  # Update the display with the drawn frame
         clock.tick(60)  # fps limit of 60 FPS so you dont burn your customers laptop
 

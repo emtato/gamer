@@ -5,7 +5,7 @@ import pygame
 import time
 import random
 
-
+from main import Window, clock, loadLevel
 
 
 class Level:
@@ -28,6 +28,10 @@ class Level:
         self.endX = List[5]
         self.endY = List[6]
 
+
+
+
+
     def printData(self):
         print(self.image)
         print(self.playerX)
@@ -36,5 +40,7 @@ class Level:
         print(self.l)
         print(self.endX)
         print(self.endY)
+        loadLevel() #activate the loading screen sequence fade to white
+
 
 

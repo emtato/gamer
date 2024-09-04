@@ -4,6 +4,7 @@ import sys
 import pygame
 import time
 import random
+from main import Window, clock, loadLevel
 
 class Bullet:
     BULLET_SPEED = 10
@@ -20,9 +21,9 @@ class Bullet:
     def collision(self):
 
     def draw(self, screen):
-        pygame.draw.circle(screen, )
+        pygame.draw.circle(Window, 'grey', [600, 600], 30)
 
-hi
+
 
 
 
