@@ -22,7 +22,7 @@ class Bullet:
     def draw(self, screen):
         pygame.draw.circle(screen, )
 
-hi
+
 
 
 
