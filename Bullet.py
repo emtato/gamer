@@ -2,6 +2,7 @@
 # Created by Emilia and Amanda on 2024-08-30
 import sys
 import pygame
+import pygame.Color
 import time
 import random
 import math
@@ -18,14 +19,24 @@ class Bullet:
         self.speedX = self.SPEED*dX
         self.speedY = self.SPEED*dY
 
-    def move(self):
-        for (x,y,clr) in self.getCollisions():
-            self.react(x,y,clr)
+    def move(self, screen):
+        #self.react(self.getCollisions(screen),screen)
         self.x += self.speedX
         self.y += self.speedY
-    def react(self,x,y,clr):
-        if(clr==self.COLOURS[-1]):
-
+    '''
+    def react(self,collisions,screen):
+        xMoved = False
+        yMoved = True
+        for (x, y, clr) in self.getCollisions():
+            if(clr==Color(0, 0, 0)):
+                if (screen.get_at((x-4,y))==)
+                if(not xMoved):
+                    if (x<self.x and y<self.y)
+            if(clr==self.COLOURS[-1]):
+                if(not yMoved):
+            if(clr==self.COLOURS[0]):
+                return
+    '''
     def getCollisions(self, screen):
         collided = []
         for i in range(self.RADIUS*2):
