@@ -1,5 +1,6 @@
 # Description:
 # Created by Emilia and Amanda on 2024-08-30
+import math
 import sys
 import pygame
 import time
@@ -8,6 +9,7 @@ import random
 import Level
 import Button
 import Bullet
+
 clock = pygame.time.Clock()
 #
 # -----------------------------------------------------------------------------------------------------------------
@@ -16,9 +18,10 @@ from click._compat import WIN
 
 pygame.font.init()  # intializes fonts to display text
 
-Width, Height = 1400, 1000
+Width, Height = 1400, 900
 Window = pygame.display.set_mode((Width, Height))
 pygame.display.set_caption("qwack")
+
 
 #
 # -----------------------------------------------------------------------------------------------------------------
@@ -33,6 +36,7 @@ def level1():
     levela = 1
     lol.printData()
 
+
 def level2():
     print("Level 2 selected")
 
@@ -41,14 +45,13 @@ def level3():
     print("Level 3 selected")
 
 
-
 #
 # -----------------------------------------------------------------------------------------------------------------
 #
 
-#loading screen
+# loading screen
 def loadLevel():
-    for i in range(0, 255, 14): #fade to white since maze is in (vomit) light mode
+    for i in range(0, 255, 14):  # fade to white since maze is in (vomit) light mode
         Window.fill((i, i, i))
         pygame.display.flip()
         clock.tick(20)
@@ -89,6 +92,13 @@ def rendertext():
     pygame.display.update()
 
 
+# rotate duck to face mouse
+def rotate_image(image, angle, pos):
+    rotated_image = pygame.transform.rotate(image, -angle)  # Rotate the image
+    rotated_rect = rotated_image.get_rect(center=pos)  # Keep the center at the circle's center
+    return rotated_image, rotated_rect
+
+
 #
 # -----------------------------------------------------------------------------------------------------------------
 #
@@ -119,42 +129,49 @@ def main():
                             Thus, we use a callback attribute in the Button class. (level1, level2... during initialization above)
                             This attribute stores a reference to the function that should be executed when the button is pressed..
                             '''
-                            button.tick = 20 #set the greyed out timer
+                            button.tick = 20  # set the greyed out timer
 
         if gamemode == 1:
-            if levela == 1:
-                car = pygame.image.load('maps/level1.png') #automate this based on level class information
-                Window.blit(car, (0,0))
-            #automate display of character    and everything else     pygame.draw.circle(Window, 'grey', [600, 600], 30)
+            levelnum = 'maps/level' + str(levela) + '.png'
+            car = pygame.image.load(levelnum)
+            Window.blit(car, (0, 0))
+            levelData = Level.Level(levela)
+            pygame.draw.circle(Window, 'grey', [int(levelData.playerX), int(levelData.playerY)], 30)
 
-
-
-
+            # automate display of character    and everything else
 
         mouse_pos = pygame.mouse.get_pos()
+        mousx, mousy = pygame.mouse.get_pos()
+        locplayerx = levelData.playerX
+        locplayery = levelData.playerY
 
+        angle = math.degrees(math.atan2(mousy - locplayery, mousx - locplayerx))
+        circle_center = (levelData.playerX, levelData.playerY)
+        rotated_image, rotated_rect = rotate_image('duck.png', angle, circle_center)
 
         if gamemode <= 0:
             for button in buttons:
-                if button.tick == 0: #when tick = 0, it means button not pressed. so it colors it grey for hover
+                if button.tick == 0:  # when tick = 0, it means button not pressed. so it colors it grey for hover
                     button.is_hovered(mouse_pos)  # Update button hover state based on mouse position
                     button.draw(Window)
                 else:
-                    button.tick-=1 #tick isnt 0 so it counts down a timer until it becomes 0 to resume the normal color.
-                    button.color = (100,100,100) #temporary darker button to confirm you clicked button
+                    button.tick -= 1  # tick isnt 0 so it counts down a timer until it becomes 0 to resume the normal color.
+                    button.color = (100, 100, 100)  # temporary darker button to confirm you clicked button
                     button.draw(Window)
         """ testing bullet movement
         bullet = Bullet.Bullet(0, 400, 400)
         bullet.draw(Window)
         bullet.move()
         """
+
+        Window.blit(rotated_image, rotated_rect)
         if gamemode <= 0:
             rendertext()  # Render main menu text and subtitle. usually do this last otherwise might cause artifacts/flickering
         pygame.display.flip()  # Update the display with the drawn frame
         clock.tick(60)  # fps limit of 60 FPS so you dont burn your customers laptop
 
-
     pygame.quit()  # Quit pygame when the loop exits
+
 
 #
 # -----------------------------------------------------------------------------------------------------------------

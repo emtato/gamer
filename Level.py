@@ -28,9 +28,9 @@ class Level:
             self.l.append([obstacles[i * 3], obstacles[i * 3 + 1], obstacles[i * 3 + 2]])
 
     def printData(self):
-        print(self.image)
-        print(self.playerX)
-        print(self.playerY)
-        print(self.bullets)
-        print(self.l)
+        print('img', self.image)
+        print('x',self.playerX)
+        print('y',self.playerY)
+        print('bullets',self.bullets)
+        print('obstaclelist',self.l)
         loadLevel()  # activate the loading screen sequence fade to white
