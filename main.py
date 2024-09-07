@@ -7,7 +7,7 @@ import time
 import random
 import Level
 import Button
-import Bullet
+#import Bullet
 clock = pygame.time.Clock()
 #
 # -----------------------------------------------------------------------------------------------------------------
@@ -124,7 +124,7 @@ levela = None
 def main():
     clock = pygame.time.Clock()  # Initialize a clock to manage the frame rate
     run = True
-
+    #bullet = Bullet.Bullet(0, 0, 0, 1, 1)
     gamemode = 0
     while run:
         if gamemode <= 0:
@@ -134,16 +134,6 @@ def main():
             if event.type == pygame.QUIT:  # If the close button is clicked
                 run = False
                 break
-
-            #quarantine zone
-            # testing bullet movement
-            if gamemode <= 0:
-
-                bullet = Bullet.Bullet(0, 0, 0, 1, 1)
-                bullet.draw(Window)
-                bullet.move(Window)
-
-
 
             if gamemode <= 0:
                 for button in buttons:  # Check each button for clicks
@@ -193,8 +183,12 @@ def main():
                     button.color = (100, 100, 100)  # temporary darker button to confirm you clicked button
                     button.draw(Window)
 
-
-
+        # quarantine zone
+        # testing bullet movement
+        '''if gamemode <= 0:
+            bullet.draw(Window)
+            bullet.move(Window)
+        '''
         if gamemode <= 0:
             rendertext()  # Render main menu text and subtitle. usually do this last otherwise might cause artifacts/flickering
         pygame.display.flip()  # Update the display with the drawn frame
