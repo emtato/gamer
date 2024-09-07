@@ -2,7 +2,6 @@
 # Created by Emilia and Amanda on 2024-08-30
 import sys
 import pygame
-#import pygame.Color
 import time
 import random
 import math
