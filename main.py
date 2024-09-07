@@ -135,6 +135,11 @@ def main():
                 run = False
                 break
             if gamemode <= 0:
+                # testing bullet movement
+                bullet = Bullet.Bullet(0, 0, 0, 1, 1)
+                bullet.draw(Window)
+                bullet.move(Window)
+
                 for button in buttons:  # Check each button for clicks
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         if button.is_clicked(event):  # is it?
@@ -147,6 +152,7 @@ def main():
                             This attribute stores a reference to the function that should be executed when the button is pressed..
                             '''
                             button.tick = 20  # set the greyed out timer
+
 
         if gamemode == 1:
 
@@ -180,10 +186,7 @@ def main():
                     button.tick -= 1  # tick isnt 0 so it counts down a timer until it becomes 0 to resume the normal color.
                     button.color = (100, 100, 100)  # temporary darker button to confirm you clicked button
                     button.draw(Window)
-        #testing bullet movement
-        bullet = Bullet.Bullet(0, 0, 0,1,1)
-        bullet.draw(Window)
-        bullet.move()
+
 
 
         if gamemode <= 0:
