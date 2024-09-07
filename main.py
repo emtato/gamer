@@ -103,7 +103,7 @@ def rendertext():
 
     Window.blit(quacker, (10, 10))  # display text
     Window.blit(desc, (10, 50))
-    Window.blit(SR, (50, 100))
+    Window.blit(SR, (577, 50))
     pygame.display.update()
 
 
