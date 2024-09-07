@@ -7,7 +7,7 @@ import random
 import math
 
 class Bullet:
-    SPEED = 20
+    SPEED = 3
     RADIUS = 20
     COLOURS = [(190,190,190)]
     def __init__(self, element, x, y,dX,dY):
@@ -24,8 +24,8 @@ class Bullet:
         self.x += self.speedX
         self.y += self.speedY
     def react(self,x,y,clr):
-        if(clr==)
-        return 0
+        if(clr==self.COLOURS[-1]):
+
     def getCollisions(self, screen):
         collided = []
         for i in range(self.RADIUS*2):
