@@ -9,7 +9,6 @@ import random
 import Level
 import Button
 import Bullet
-
 clock = pygame.time.Clock()
 #
 # -----------------------------------------------------------------------------------------------------------------
@@ -22,7 +21,7 @@ Width, Height = 1400, 900
 Window = pygame.display.set_mode((Width, Height))
 pygame.display.set_caption("qwack")
 
-
+duck_image = pygame.image.load('duck.png') #reference for turret later
 #
 # -----------------------------------------------------------------------------------------------------------------
 #
@@ -31,8 +30,8 @@ pygame.display.set_caption("qwack")
 # level selector functions
 def level1():
     print("Level 1 selected")
-    lol = Level.Level(1)
     global levela
+    lol = Level.Level(1)
     levela = 1
     lol.printData()
 
@@ -104,7 +103,7 @@ def rotate_image(image, angle, pos):
 #
 
 # main game logic, while loop to run everything
-
+levela = None
 def main():
     clock = pygame.time.Clock()  # Initialize a clock to manage the frame rate
     run = True
@@ -138,17 +137,20 @@ def main():
             levelData = Level.Level(levela)
             pygame.draw.circle(Window, 'grey', [int(levelData.playerX), int(levelData.playerY)], 30)
 
-            # automate display of character    and everything else
+
+            levelData = Level.Level(levela)
+
+            mousx, mousy = pygame.mouse.get_pos()
+            locplayerx = int(levelData.playerX)
+            locplayery = int(levelData.playerY)
+
+            angle = math.degrees(math.atan2(mousy - locplayery, mousx - locplayerx))
+            circle_center = (locplayerx, locplayery)
+            rotated_image, rotated_rect = rotate_image(duck_image, angle, circle_center)
+            Window.blit(rotated_image, rotated_rect)
+
 
         mouse_pos = pygame.mouse.get_pos()
-        mousx, mousy = pygame.mouse.get_pos()
-        locplayerx = levelData.playerX
-        locplayery = levelData.playerY
-
-        angle = math.degrees(math.atan2(mousy - locplayery, mousx - locplayerx))
-        circle_center = (levelData.playerX, levelData.playerY)
-        rotated_image, rotated_rect = rotate_image('duck.png', angle, circle_center)
-
         if gamemode <= 0:
             for button in buttons:
                 if button.tick == 0:  # when tick = 0, it means button not pressed. so it colors it grey for hover
@@ -164,7 +166,6 @@ def main():
         bullet.move()
         """
 
-        Window.blit(rotated_image, rotated_rect)
         if gamemode <= 0:
             rendertext()  # Render main menu text and subtitle. usually do this last otherwise might cause artifacts/flickering
         pygame.display.flip()  # Update the display with the drawn frame
