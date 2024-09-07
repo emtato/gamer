@@ -134,12 +134,18 @@ def main():
             if event.type == pygame.QUIT:  # If the close button is clicked
                 run = False
                 break
+
+            #quarantine zone
+            # testing bullet movement
             if gamemode <= 0:
-                # testing bullet movement
+
                 bullet = Bullet.Bullet(0, 0, 0, 1, 1)
                 bullet.draw(Window)
                 bullet.move(Window)
 
+
+
+            if gamemode <= 0:
                 for button in buttons:  # Check each button for clicks
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         if button.is_clicked(event):  # is it?
