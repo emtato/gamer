@@ -8,6 +8,7 @@ import random
 hi
 import Level
 import Button
+
 clock = pygame.time.Clock()
 #
 # -----------------------------------------------------------------------------------------------------------------
@@ -20,7 +21,9 @@ Width, Height = 1400, 900
 Window = pygame.display.set_mode((Width, Height))
 pygame.display.set_caption("qwack")
 
-duck_image = pygame.image.load('duck.png') #reference for turret later
+duck_image = pygame.image.load('duck.png')  # reference for turret later
+
+
 #
 # -----------------------------------------------------------------------------------------------------------------
 #
@@ -43,6 +46,16 @@ def level3():
     print("Level 3 selected")
 
 
+# change screen size
+def screensmall():
+    Width, Height = 1200, 836
+    Window = pygame.display.set_mode((Width, Height))
+
+
+def screenbig():
+    Width, Height = 1400, 900
+    Window = pygame.display.set_mode((Width, Height))
+    pygame.display.set_caption("qwack")
 #
 # -----------------------------------------------------------------------------------------------------------------
 #
@@ -64,9 +77,11 @@ def loadLevel():
 buttons = [
     Button.Button("Level 1", 300, 200, 200, 50, level1),
     Button.Button("Level 2", 300, 300, 200, 50, level2),
-    Button.Button("Level 3", 300, 400, 200, 50, level3)
-]
+    Button.Button("Level 3", 300, 400, 200, 50, level3),
+    Button.Button('small', 400, 100, 200, 50, screensmall),
+    Button.Button('big', 700, 100, 200, 50, screenbig)
 
+]
 
 #
 # -----------------------------------------------------------------------------------------------------------------
@@ -74,7 +89,7 @@ buttons = [
 
 FONT = pygame.font.SysFont("arial", 30)
 FONT2 = pygame.font.Font(None, 24)  # None means default font
-
+#test
 
 #
 # -----------------------------------------------------------------------------------------------------------------
@@ -84,10 +99,11 @@ FONT2 = pygame.font.Font(None, 24)  # None means default font
 def rendertext():
     quacker = FONT.render("quacker", True, "white")  # defining each font
     desc = FONT2.render("a game by ayaka umbrella fans", True, "grey")
+    SR = FONT2.render("select screen size", True, "grey")
 
     Window.blit(quacker, (10, 10))  # display text
     Window.blit(desc, (10, 50))
-
+    Window.blit(SR, (50, 100))
     pygame.display.update()
 
 
@@ -104,6 +120,8 @@ def rotate_image(image, angle, pos):
 
 # main game logic, while loop to run everything
 levela = None
+
+
 def main():
     clock = pygame.time.Clock()  # Initialize a clock to manage the frame rate
     run = True
@@ -121,7 +139,8 @@ def main():
                 for button in buttons:  # Check each button for clicks
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         if button.is_clicked(event):  # is it?
-                            gamemode = 1
+                            if levela != None:
+                                gamemode = 1
                             button.callback()  # if button is pressed, button.callback (from button class, callback is an attribute/property)
                             '''in this case, we defined multiple buttons that should execute different things (levels) but since were using
                             the same button press checker function, its hard to determine which function to execute IF the button is pressed.
@@ -137,7 +156,6 @@ def main():
             levelData = Level.Level(levela)
             pygame.draw.circle(Window, 'grey', [int(levelData.playerX), int(levelData.playerY)], 30)
 
-
             levelData = Level.Level(levela)
 
             mousx, mousy = pygame.mouse.get_pos()
@@ -148,7 +166,6 @@ def main():
             circle_center = (locplayerx, locplayery)
             rotated_image, rotated_rect = rotate_image(duck_image, angle, circle_center)
             Window.blit(rotated_image, rotated_rect)
-
 
         mouse_pos = pygame.mouse.get_pos()
         if gamemode <= 0:
