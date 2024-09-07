@@ -5,10 +5,9 @@ import sys
 import pygame
 import time
 import random
-
 import Level
 import Button
-
+import Bullet
 clock = pygame.time.Clock()
 #
 # -----------------------------------------------------------------------------------------------------------------
@@ -181,11 +180,11 @@ def main():
                     button.tick -= 1  # tick isnt 0 so it counts down a timer until it becomes 0 to resume the normal color.
                     button.color = (100, 100, 100)  # temporary darker button to confirm you clicked button
                     button.draw(Window)
-        """ testing bullet movement
-        bullet = Bullet.Bullet(0, 400, 400)
+        #testing bullet movement
+        bullet = Bullet.Bullet(0, 0, 0,1,1)
         bullet.draw(Window)
         bullet.move()
-        """
+
 
         if gamemode <= 0:
             rendertext()  # Render main menu text and subtitle. usually do this last otherwise might cause artifacts/flickering
