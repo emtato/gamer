@@ -7,3 +7,19 @@ i am eepy
 i am eepy too
 
 hi
+
+
+
+ problem:
+screen change size works, but for some reosn the window width variable revrts to 1400 in the level window itself being smaller so it cuts off the image, which
+is trying to display at width 1400
+
+
+method of detecting which walls it is
+(x,y)
+check y+4p
+y-4p
+x+4p
+x-4p
+use logic to determine which type (horizontal,vertical) and from beneath/above/ left/right hit
+

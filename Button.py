@@ -6,12 +6,13 @@ import time
 import random
 
 class Button:
-    def __init__(self, text, x, y, width, height, callback):
+    def __init__(self, text, x, y, width, height, callback, is_level):
         self.text = text
         self.rect = pygame.Rect(x, y, width, height)
         self.color = "WHITE"
         self.callback = callback
         self.tick = 0
+        self.is_level = is_level
 
     def draw(self, screen):
         pygame.draw.rect(screen, self.color, self.rect)
