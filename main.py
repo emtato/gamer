@@ -75,13 +75,13 @@ def loadLevel():
 # initializing buttons
 
 buttons = [
-    Button.Button("Level 1", 300, 200, 200, 50, level1),
-    Button.Button("Level 2", 300, 300, 200, 50, level2),
-    Button.Button("Level 3", 300, 400, 200, 50, level3),
-    Button.Button('small', 400, 100, 200, 50, screensmall),
-    Button.Button('big', 700, 100, 200, 50, screenbig)
-
+    Button.Button("Level 1", 300, 200, 200, 50, level1, is_level=True),
+    Button.Button("Level 2", 300, 300, 200, 50, level2, is_level=True),
+    Button.Button("Level 3", 300, 400, 200, 50, level3, is_level=True),
+    Button.Button('small', 400, 100, 200, 50, screensmall, is_level=False),
+    Button.Button('big', 700, 100, 200, 50, screenbig, is_level=False)
 ]
+
 
 #
 # -----------------------------------------------------------------------------------------------------------------
@@ -139,7 +139,7 @@ def main():
                 for button in buttons:  # Check each button for clicks
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         if button.is_clicked(event):  # is it?
-                            if levela != None:
+                            if button.is_level:
                                 gamemode = 1
                             button.callback()  # if button is pressed, button.callback (from button class, callback is an attribute/property)
                             '''in this case, we defined multiple buttons that should execute different things (levels) but since were using
@@ -150,8 +150,12 @@ def main():
                             button.tick = 20  # set the greyed out timer
 
         if gamemode == 1:
-            levelnum = 'maps/level' + str(levela) + '.png'
-            car = pygame.image.load(levelnum)
+
+            levelnum ='maps/level' + str(levela) + '.png'
+
+            bg = pygame.image.load(levelnum)
+            car = pygame.transform.scale(bg, (Width, Height))
+            print(Width)
             Window.blit(car, (0, 0))
             levelData = Level.Level(levela)
             pygame.draw.circle(Window, 'grey', [int(levelData.playerX), int(levelData.playerY)], 30)
