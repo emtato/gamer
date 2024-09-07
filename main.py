@@ -8,7 +8,6 @@ import random
 import Level
 import Button
 import Bullet
-global levela
 clock = pygame.time.Clock()
 #
 # -----------------------------------------------------------------------------------------------------------------
@@ -21,7 +20,6 @@ Width, Height = 1400, 1000
 Window = pygame.display.set_mode((Width, Height))
 pygame.display.set_caption("qwack")
 
-
 #
 # -----------------------------------------------------------------------------------------------------------------
 #
@@ -31,6 +29,7 @@ pygame.display.set_caption("qwack")
 def level1():
     print("Level 1 selected")
     lol = Level.Level(1)
+    global levela
     levela = 1
     lol.printData()
 
@@ -121,10 +120,15 @@ def main():
                             This attribute stores a reference to the function that should be executed when the button is pressed..
                             '''
                             button.tick = 20 #set the greyed out timer
-        #lala= Level.Level(levela)
+
         if gamemode == 1:
-            car = pygame.image.load('testimg.jpeg')
-            Window.blit(car, (100,100))
+            if levela == 1:
+                car = pygame.image.load('maps/level1.png') #automate this based on level class information
+                Window.blit(car, (0,0))
+            #automate display of character    and everything else     pygame.draw.circle(Window, 'grey', [600, 600], 30)
+
+
+
 
 
         mouse_pos = pygame.mouse.get_pos()
@@ -144,7 +148,6 @@ def main():
         bullet.draw(Window)
         bullet.move()
         """
-        pygame.draw.circle(Window, 'grey', [600, 600], 30)
         if gamemode <= 0:
             rendertext()  # Render main menu text and subtitle. usually do this last otherwise might cause artifacts/flickering
         pygame.display.flip()  # Update the display with the drawn frame
