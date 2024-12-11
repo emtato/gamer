@@ -2,12 +2,15 @@
 # Created by Emilia and Amanda on 2024-08-30
 import math
 import sys
+from typing import Optional
+
 import pygame
 import time
 import random
-import Level
-import Button
-#import Bullet
+from Level import Level
+from Button import Button
+from Bullet import Bullet
+
 clock = pygame.time.Clock()
 #
 # -----------------------------------------------------------------------------------------------------------------
@@ -20,7 +23,8 @@ Width, Height = 1400, 900
 Window = pygame.display.set_mode((Width, Height))
 pygame.display.set_caption("qwack")
 
-duck_image = pygame.image.load('duck.png')  # reference for turret later
+# move to Level.py
+#duck_image = pygame.image.load('duck.png')  # reference for turret later
 
 
 #
@@ -32,9 +36,17 @@ duck_image = pygame.image.load('duck.png')  # reference for turret later
 def level1():
     print("Level 1 selected")
     global levela
-    lol = Level.Level(1)
+    global level
+    level = Level(1)
     levela = 1
-    lol.printData()
+
+    # testing purposes
+    print('img', level.bg)
+    print('x', level.playerX)
+    print('y', level.playerY)
+    print('bullets', level.bullets)
+    print('obstaclelist', level.obstacle_data)
+    loadLevel()  # activate the loading screen sequence fade to white
 
 
 def level2():
@@ -55,6 +67,8 @@ def screenbig():
     Width, Height = 1400, 900
     Window = pygame.display.set_mode((Width, Height))
     pygame.display.set_caption("qwack")
+
+
 #
 # -----------------------------------------------------------------------------------------------------------------
 #
@@ -74,18 +88,18 @@ def loadLevel():
 # initializing buttons
 
 buttons = [
-    Button.Button("Level 1", 300, 200, 200, 50, level1, is_level=True),
-    Button.Button("Level 2", 300, 300, 200, 50, level2, is_level=True),
-    Button.Button("Level 3", 300, 400, 200, 50, level3, is_level=True),
-    Button.Button('small', 400, 100, 200, 50, screensmall, is_level=False),
-    Button.Button('big', 700, 100, 200, 50, screenbig, is_level=False)
+    Button("Level 1", 300, 200, 200, 50, level1, is_level=True),
+    Button("Level 2", 300, 300, 200, 50, level2, is_level=True),
+    Button("Level 3", 300, 400, 200, 50, level3, is_level=True),
+    Button('small', 400, 100, 200, 50, screensmall, is_level=False),
+    Button('big', 700, 100, 200, 50, screenbig, is_level=False)
 ]
-
 
 #
 # -----------------------------------------------------------------------------------------------------------------
 #
 
+#fonts
 FONT = pygame.font.SysFont("arial", 30)
 FONT2 = pygame.font.Font(None, 24)  # None means default font
 #test
@@ -106,17 +120,12 @@ def rendertext():
     pygame.display.update()
 
 
-# rotate duck to face mouse
-def rotate_image(image, angle, pos):
-    rotated_image = pygame.transform.rotate(image, -angle)  # Rotate the image
-    rotated_rect = rotated_image.get_rect(center=pos)  # Keep the center at the circle's center
-    return rotated_image, rotated_rect
-
-
 #
 # -----------------------------------------------------------------------------------------------------------------
 #
 
+# Initialize the level
+level = None
 # main game logic, while loop to run everything
 levela = None
 
@@ -124,10 +133,10 @@ levela = None
 def main():
     clock = pygame.time.Clock()  # Initialize a clock to manage the frame rate
     run = True
-    #bullet = Bullet.Bullet(0, 0, 0, 1, 1)
+    bullet = Bullet(0, 100, 100, 1, 1)
     gamemode = 0
     while run:
-        if gamemode <= 0:
+        if gamemode <= 0:  # in the main menu
             Window.fill('BLACK')
 
         for event in pygame.event.get():  # Process all events in the event queue
@@ -135,7 +144,7 @@ def main():
                 run = False
                 break
 
-            if gamemode <= 0:
+            if gamemode <= 0:  # in the main menu
                 for button in buttons:  # Check each button for clicks
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         if button.is_clicked(event):  # is it?
@@ -149,28 +158,8 @@ def main():
                             '''
                             button.tick = 20  # set the greyed out timer
 
-
-        if gamemode == 1:
-
-            levelnum ='maps/level' + str(levela) + '.png'
-
-            bg = pygame.image.load(levelnum)
-            car = pygame.transform.scale(bg, (Width, Height))
-            print(Width)
-            Window.blit(car, (0, 0))
-            levelData = Level.Level(levela)
-            pygame.draw.circle(Window, 'grey', [int(levelData.playerX), int(levelData.playerY)], 30)
-
-            levelData = Level.Level(levela)
-
-            mousx, mousy = pygame.mouse.get_pos()
-            locplayerx = int(levelData.playerX)
-            locplayery = int(levelData.playerY)
-
-            angle = math.degrees(math.atan2(mousy - locplayery, mousx - locplayerx))
-            circle_center = (locplayerx, locplayery)
-            rotated_image, rotated_rect = rotate_image(duck_image, angle, circle_center)
-            Window.blit(rotated_image, rotated_rect)
+        if gamemode == 1:  # in the game
+            level.draw(Window)
 
         mouse_pos = pygame.mouse.get_pos()
         if gamemode <= 0:
@@ -183,12 +172,6 @@ def main():
                     button.color = (100, 100, 100)  # temporary darker button to confirm you clicked button
                     button.draw(Window)
 
-        # quarantine zone
-        # testing bullet movement
-        '''if gamemode <= 0:
-            bullet.draw(Window)
-            bullet.move(Window)
-        '''
         if gamemode <= 0:
             rendertext()  # Render main menu text and subtitle. usually do this last otherwise might cause artifacts/flickering
         pygame.display.flip()  # Update the display with the drawn frame

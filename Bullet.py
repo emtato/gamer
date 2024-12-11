@@ -6,45 +6,54 @@ import time
 import random
 import math
 
+
 class Bullet:
     SPEED = 3
     RADIUS = 20
-    COLOURS = [(190,190,190)]
-    def __init__(self, element, x, y,dX,dY):
+    norm = (169,169,169)
+    pyr = (239,122,53)
+    hyd = (0, 191, 255)
+    geo = (222, 189, 108)
+    dend = (166,201,56)
+    elec = (176,143,194)
+    cry = (160,215,228)
+    anem = (117,194,170)
+    COLOURS = [norm, pyr, hyd, geo, dend, elec, cry, anem]
+    element: int
+    colour: tuple
+    x: int
+    y: int
+    speed_x: int
+    speed_y: int
+
+    def __init__(self, element, x, y, dx, dy):
         self.element = element
         self.colour = self.COLOURS[element]
         self.x = x
         self.y = y
-        self.speedX = self.SPEED*dX
-        self.speedY = self.SPEED*dY
+        self.speed_x = self.SPEED * dx
+        self.speed_y = self.SPEED * dy
 
     def move(self, screen):
-        #self.react(self.getCollisions(screen),screen)
-        self.x += self.speedX
-        self.y += self.speedY
-    '''
-    def react(self,collisions,screen):
-        xMoved = False
-        yMoved = True
-        for (x, y, clr) in self.getCollisions():
-            if(clr==Color(0, 0, 0)):
-                if (screen.get_at((x-4,y))==)
-                if(not xMoved):
-                    if (x<self.x and y<self.y)
-            if(clr==self.COLOURS[-1]):
-                if(not yMoved):
-            if(clr==self.COLOURS[0]):
-                return
-    '''
-    def getCollisions(self, screen):
-        collided = []
-        for i in range(self.RADIUS*2):
-            for r in range(self.RADIUS*2):
-                if(math.sqrt((self.RADIUS-i)**2+(self.RADIUS-r)**2))<=self.RADIUS:
-                    clr = screen.get_at((self.x-self.RADIUS+i,self.y-self.RADIUS+r))
-                    collided.append(((self.x-self.RADIUS+i,self.y-self.RADIUS+r,clr)))
-        return collided
+        # Change direction if collides with wall
+        if self.collides(screen, self.x + self.speed_x, self.y):
+            self.speed_x = -self.speed_x  # Reverse direction x
+        if self.collides(screen, self.x, self.y + self.speed_y):
+            self.speed_y = -self.speed_y  # Reverse direction y
+
+        self.x += self.speed_x
+        self.y += self.speed_y
+
+    def collides(self, screen, new_x, new_y):
+        for i in range(self.RADIUS * 2):
+            for j in range(self.RADIUS * 2):
+                if (math.sqrt((self.RADIUS - i) ** 2 + (self.RADIUS - j) ** 2)) <= self.RADIUS:
+                    clr = screen.get_at((new_x - self.RADIUS + i, new_y - self.RADIUS + j))
+                    if clr == (0, 0, 0):  # Check if the color is black
+                        return True
+        return False
+
     def draw(self, screen):
-        pygame.draw.circle(screen, self.colour, (self.x, self.y),self.RADIUS)
+        pygame.draw.circle(screen, self.colour, (self.x, self.y), self.RADIUS)
 
 #pew pew
