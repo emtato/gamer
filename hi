@@ -24,3 +24,7 @@ x-4p
 use logic to determine which type (horizontal,vertical) and from beneath/above/ left/right hit
 
 meow i am alive and trying to understna wtf we did 3 months ago
+
+woem so i made aiming work but 1. need to make it so multiple bullets work at same time idk how u iplemeneted bullets
+2. need to make window rescaling work inside levels (rescale the background image) cuz rn it just crops it and that'll
+crash cuz it only bounces on black not on side of window so if that crashes for you its not that bullet is broken
