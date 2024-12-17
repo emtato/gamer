@@ -8,8 +8,8 @@ import math
 
 
 class Bullet:
-    SPEED = 3
-    RADIUS = 20
+    #SPEED = 3 useless attribute?
+    RADIUS = 10
     norm = (169,169,169)
     pyr = (239,122,53)
     hyd = (0, 191, 255)
@@ -23,32 +23,36 @@ class Bullet:
     colour: tuple
     x: int
     y: int
-    speed_x: int
-    speed_y: int
+    speed_x: float
+    speed_y: float
 
     def __init__(self, element, x, y, dx, dy):
         self.element = element
         self.colour = self.COLOURS[element]
         self.x = x
         self.y = y
-        self.speed_x = self.SPEED * dx
-        self.speed_y = self.SPEED * dy
+        self.speed_x = dx
+        self.speed_y = dy
 
+
+    #funky if added some amount of quirky randomness (the current amount of randomness is so the bullet doesnt form loops as i've tested)
+    #the randomness i suggest above could be a level specific property where the bounces are chaotic
     def move(self, screen):
+        rx, ry =random.uniform(0.5, 1), random.uniform(0.5, 1) #change to like 20 50 for fun
         # Change direction if collides with wall
         if self.collides(screen, self.x + self.speed_x, self.y):
-            self.speed_x = -self.speed_x  # Reverse direction x
+            self.speed_x =- (self.speed_x + rx)# Reverse direction x
         if self.collides(screen, self.x, self.y + self.speed_y):
-            self.speed_y = -self.speed_y  # Reverse direction y
+            self.speed_y = -(self.speed_y +ry) # Reverse direction y
 
         self.x += self.speed_x
         self.y += self.speed_y
 
     def collides(self, screen, new_x, new_y):
-        for i in range(self.RADIUS * 2):
-            for j in range(self.RADIUS * 2):
+        for i in range(int(self.RADIUS/3), self.RADIUS):
+            for j in range(int(self.RADIUS/3), self.RADIUS): #o(n^2) algorithm inneficient :nerd:
                 if (math.sqrt((self.RADIUS - i) ** 2 + (self.RADIUS - j) ** 2)) <= self.RADIUS:
-                    clr = screen.get_at((new_x - self.RADIUS + i, new_y - self.RADIUS + j))
+                    clr = screen.get_at((round(new_x - self.RADIUS + i), round(new_y - self.RADIUS + j)))
                     if clr == (0, 0, 0):  # Check if the color is black
                         return True
         return False

@@ -35,17 +35,18 @@ class Level:
         self.playerX = int(lst[1])
         self.playerY = int(lst[2])
         bullet_data = lst[3]
-        self.bullets = [Bullet(i, self.playerX, self.playerY, 0, 0) for i in range(7) for
-                        j in range(int(bullet_data[i]))]
+        self.bullets = [Bullet(i, self.playerX, self.playerY, 0, 0) for i in range(7) for j in
+                        range(int(bullet_data[i]))]
         self.bullet_poof = int(lst[4])
         obstacles = lst[5].split('_')
         self.obstacle_data = []
         for i in range(len(obstacles) // 3):
             self.obstacle_data.append([obstacles[i * 3], obstacles[i * 3 + 1], obstacles[i * 3 + 2]])
 
-        # testing - delete later
-        self.bullets[9].speed_x = self.bullets[9].SPEED
-        self.bullets[9].speed_y = self.bullets[9].SPEED
+        # testing - delete later  # self.bullets[9].speed_x = self.bullets[9].SPEED  # self.bullets[9].speed_y =   #
+        # self.bullets[9].SPEED
+
+    # self.bullets[9].speed_x, self.bullets[9].speed_y = 4, 9 #i have no idea what SPEED does or what bullets list is
 
     """ move to main.py
     def printData(self):
@@ -65,14 +66,21 @@ class Level:
     def draw(self, screen):
 
         # car = pygame.transform.scale(self.bg, (Width, Height))
-        car = pygame.transform.scale(self.bg, (1400, 900)) #assume large screen for now
+        car = pygame.transform.scale(self.bg, (1400, 900))  # assume large screen for now
         screen.blit(car, (0, 0))
-        level_data = Level(self.level_num)
         pygame.draw.circle(screen, 'grey', [int(self.playerX), int(self.playerY)], 30)
 
+        #resizing window correctly in levels, size = input variable in function
+        '''  if size == 'big':
+                    car = pygame.transform.scale(self.bg, (1400, 900))  # assume large screen for now
+                    screen.blit(car, (0, 0))
+                else:
+                    car = pygame.transform.scale(self.bg, (1200, 836))  # assume large screen for now
+                    screen.blit(car, (0, 0))
+        '''
         mousx, mousy = pygame.mouse.get_pos()
-        locplayerx = int(level_data.playerX)
-        locplayery = int(level_data.playerY)
+        locplayerx = int(self.playerX)
+        locplayery = int(self.playerY)
 
         angle = math.degrees(math.atan2(mousy - locplayery, mousx - locplayerx))
         circle_center = (locplayerx, locplayery)
@@ -83,3 +91,5 @@ class Level:
             bullet.move(screen)
             bullet.draw(screen)
 
+    def launch(self, dx, dy):
+        self.bullets[9].speed_x, self.bullets[9].speed_y = dx, dy
