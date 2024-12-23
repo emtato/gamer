@@ -30,11 +30,9 @@ pygame.display.set_caption("qwack")
 def scale_bg(image, window_width, window_height):
     return pygame.transform.scale(image, (window_width, window_height))
 
-
 #
 # -----------------------------------------------------------------------------------------------------------------
 #
-
 
 # level selector functions
 def level1():
@@ -52,14 +50,12 @@ def level1():
     print('obstaclelist', level.obstacle_data)
     loadLevel()  # activate the loading screen sequence fade to white
 
-
 def level2():
     print("Level 2 selected")
 
 
 def level3():
     print("Level 3 selected")
-
 
 # change screen size
 def screensmall():
@@ -76,7 +72,6 @@ def screenbig():
     Window = pygame.display.set_mode((Width, Height))
     pygame.display.set_caption("qwack")
 
-
 #
 # -----------------------------------------------------------------------------------------------------------------
 #
@@ -87,7 +82,6 @@ def loadLevel():
         Window.fill((i, i, i))
         pygame.display.flip()
         clock.tick(20)
-
 
 #
 # -----------------------------------------------------------------------------------------------------------------
@@ -109,13 +103,11 @@ buttons = [Button("Level 1", 300, 200, 200, 50, level1, is_level=True),
 FONT = pygame.font.SysFont("arial", 30)
 FONT2 = pygame.font.Font(None, 24)  # None means default font
 
-
 # test
 
 #
 # -----------------------------------------------------------------------------------------------------------------
 #
-
 
 def rendertext():
     quacker = FONT.render("quacker", True, "white")  # defining each font
@@ -126,7 +118,6 @@ def rendertext():
     Window.blit(desc, (10, 50))
     Window.blit(SR, (50, 100))
     pygame.display.update()
-
 
 #
 # -----------------------------------------------------------------------------------------------------------------
@@ -224,7 +215,6 @@ def main():
         clock.tick(60)  # fps limit of 60 FPS so you dont burn your customers laptop
 
     pygame.quit()  # Quit pygame when the loop exits
-
 
 #
 # -----------------------------------------------------------------------------------------------------------------

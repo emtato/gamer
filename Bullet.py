@@ -5,6 +5,8 @@ import pygame
 import time
 import random
 import math
+pygame.mixer.init()
+bounce = pygame.mixer.Sound("files/bounce.mp3")
 
 
 class Bullet:
@@ -54,6 +56,8 @@ class Bullet:
                 if (math.sqrt((self.RADIUS - i) ** 2 + (self.RADIUS - j) ** 2)) <= self.RADIUS:
                     clr = screen.get_at((round(new_x - self.RADIUS + i), round(new_y - self.RADIUS + j)))
                     if clr == (0, 0, 0):  # Check if the color is black
+                        pygame.mixer.Sound.play(bounce) #this sound gets anoying as shit very fast find another or no sound at all?
+                        pygame.mixer.music.stop()
                         return True
         return False
 
