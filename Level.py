@@ -34,8 +34,8 @@ class Level:
         self.bg = pygame.image.load(bg_img_filename)
         self.playerX = int(lst[1])
         self.playerY = int(lst[2])
-        bullet_data = lst[3]
-        self.bullets = [Bullet(i, self.playerX, self.playerY, 0, 0) for i in range(7) for j in
+        bullet_data = str(lst[3])
+        self.bullets = [Bullet(i, self.playerX, self.playerY, 0, 0) for i in range(8) for j in
                         range(int(bullet_data[i]))]
         self.bullet_poof = int(lst[4])
         obstacles = lst[5].split('_')
@@ -70,7 +70,7 @@ class Level:
         screen.blit(car, (0, 0))
         pygame.draw.circle(screen, 'grey', [int(self.playerX), int(self.playerY)], 30)
 
-        #resizing window correctly in levels, size = input variable in function
+        # resizing window correctly in levels, size = input variable in function
         '''  if size == 'big':
                     car = pygame.transform.scale(self.bg, (1400, 900))  # assume large screen for now
                     screen.blit(car, (0, 0))
@@ -91,7 +91,6 @@ class Level:
             bullet.move(screen)
             bullet.draw(screen)
 
-    def launch(self, dx, dy):
-        self.bullets[9].speed_x, self.bullets[9].speed_y = dx, dy
-        #need to implement presence of multiple bullets on board at the same time but ifk how u did this so yeah
-
+    def launch(self, bulletslaunched, dx, dy):
+        self.bullets[bulletslaunched].speed_x, self.bullets[bulletslaunched].speed_y = dx, dy
+        # need to implement presence of multiple bullets on board at the same time but ifk how u did this so yeah

@@ -1,6 +1,6 @@
 format for data. if obstacles is 0 0 0 ignore obstacles, none exist. 108 800 is bottom left corner,  max bullet n is 9 per type.
-imgNum, playerx, playery, bullets (index 0-7, norm, pyr, hyd, geo, dend, elec, cry, anem) bulletDisappearTime obstacles (element_xpos_ypos until theres no more _)
-1 108 800 9100000 20 0_0_0
+imgNum, playerx, playery, num each type bullets (index 0-7, norm, pyr, hyd, geo, dend, elec, cry, anem) bulletDisappearTime obstacles (element_xpos_ypos until theres no more _)
+1 108 800 99999999 20 0_0_0
 2
 3
 4

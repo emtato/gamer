@@ -128,13 +128,14 @@ level = None
 # main game logic, while loop to run everything
 levela = None
 
-
 def main():
+    bulletslaunched = 0
     clock = pygame.time.Clock()  # Initialize a clock to manage the frame rate
     run = True
 
     gamemode = 0
     while run:
+
         if gamemode <= 0:  # in the main menu
             Window.fill('BLACK')
 
@@ -192,11 +193,10 @@ def main():
                         differencex /= length
                         differencey /= length
 
-                    # this wouldve been my idea but it isnt copatible with the current thing
-                    bullet = Bullet(0, playerx, playery, differencex, differencey)  # trying here to get bullet
-                    # to launch at correct angle relative to where the mouseis aiiming, differencex and y are set to ≥1
-                    # so speed is constant and theyre relative to ach other
-                    Level.launch(level, speedmultiplier * differencex, speedmultiplier * differencey)
+                    bullet = Bullet(0, playerx, playery, differencex, differencey)
+                    Level.launch(level, bulletslaunched, speedmultiplier * differencex, speedmultiplier * differencey)
+                    bulletslaunched+=1
+
 
         if gamemode <= 0:
 

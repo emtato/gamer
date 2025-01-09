@@ -36,6 +36,10 @@ class Bullet:
         self.speed_x = dx
         self.speed_y = dy
 
+    def __repr__(self):
+        return f"elm={self.element}"
+    def __str__(self):
+        return self.element
 
     #funky if added some amount of quirky randomness (the current amount of randomness is so the bullet doesnt form loops as i've tested)
     #the randomness i suggest above could be a level specific property where the bounces are chaotic
@@ -50,6 +54,7 @@ class Bullet:
         self.x += self.speed_x
         self.y += self.speed_y
 
+    #change collides to bounding box way more efficient
     def collides(self, screen, new_x, new_y):
         for i in range(int(self.RADIUS/3), self.RADIUS):
             for j in range(int(self.RADIUS/3), self.RADIUS): #o(n^2) algorithm inneficient :nerd:
