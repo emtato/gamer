@@ -199,6 +199,7 @@ def main():
                     Level.launch(level, speedmultiplier * differencex, speedmultiplier * differencey)
 
         if gamemode <= 0:
+
             for button in buttons:
                 if button.tick == 0:  # when tick = 0, it means button not pressed. so it colors it grey for hover
                     button.is_hovered(mouse_pos)  # Update button hover state based on mouse position
@@ -206,10 +207,13 @@ def main():
                 else:
                     button.tick -= 1  # tick isnt 0 so it counts down a timer until it becomes 0 to resume the normal
                     # color.
-                    button.color = (100, 100, 100)  # temporary darker button to confirm you clicked button
                     button.draw(Window)
-            rendertext()  # Render main menu text and subtitle. usually do this last otherwise might cause  #  #   #
-            # artifacts/flickering
+                    button.color = (100, 100, 100)  # temporary darker button to confirm you clicked button
+            rendertext()
+            # Render main menu text and subtitle. usually do this last otherwise might cause artifacts/flickering
+            #but, if in rendertext the display update is removed, rendertext func call can be placed on top too.
+            #probably has to do with how display update causes that if its not at the end of buttons being drawn?
+
 
         pygame.display.flip()  # Update the display with the drawn frame
         clock.tick(60)  # fps limit of 60 FPS so you dont burn your customers laptop
