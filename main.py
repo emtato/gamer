@@ -196,7 +196,18 @@ def main():
                     bullet = Bullet(0, playerx, playery, differencex, differencey)
                     Level.launch(level, bulletslaunched, speedmultiplier * differencex, speedmultiplier * differencey)
                     bulletslaunched+=1
-
+                    '''avoid drawing all bullets at once (happens in Level.py. currently on level.draw, it iterates bullets list and draws all
+                    
+                    
+                    code in progress for this goal:
+                    
+                     bulletlist = level.bullets
+                    if bulletslaunched < len(bulletlist):
+                        bullet = Bullet(bulletlist[bulletslaunched].element, playerx, playery, differencex, differencey)
+                        Level.launch(level, bulletslaunched, speedmultiplier * differencex, speedmultiplier * differencey)
+                        bulletslaunched+=1
+                        bullet.draw(Window)
+                    '''
 
         if gamemode <= 0:
 

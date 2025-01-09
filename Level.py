@@ -93,4 +93,3 @@ class Level:
 
     def launch(self, bulletslaunched, dx, dy):
         self.bullets[bulletslaunched].speed_x, self.bullets[bulletslaunched].speed_y = dx, dy
-        # need to implement presence of multiple bullets on board at the same time but ifk how u did this so yeah
