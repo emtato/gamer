@@ -18,9 +18,11 @@ class Level:
     bullet_poof: int
     obstacle_data: list
     duck_image = pygame.image.load('duck.png')
+    shifted: bool
 
     def __init__(self, level_num):
         self.level_num = level_num
+        self.shifted = False
         # read data from file
         file_name = "data"
         file = open(file_name, "r")
@@ -66,9 +68,10 @@ class Level:
 
         car = pygame.transform.scale(self.bg, (1400 if size == 'big' else 1200, 900  if size == 'big' else 771))  # assume large screen for now
         screen.blit(car, (0, 0))
-        if size == 'small':
-            self.playerX = int(self.playerX * (1200 / 1400))
-            self.playerY = int(self.playerY * (771 / 900))
+        if size == 'small' and not self.shifted:
+            self.playerX = int(self.playerX * (12/14))
+            self.playerY = int(self.playerY * (771/900))
+            self.shifted = True
         pygame.draw.circle(screen, 'grey', [int(self.playerX), int(self.playerY)], 30)
 
         # resizing window correctly in levels, size = input variable in function
