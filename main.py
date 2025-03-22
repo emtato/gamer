@@ -22,18 +22,11 @@ Width, Height = 1400, 900
 Window = pygame.display.set_mode((Width, Height))
 pygame.display.set_caption("qwack")
 
-
 # move to Level.py
 # duck_image = pygame.image.load('duck.png')  # reference for turret later
 
 def scale_bg(image, window_width, window_height):
-    button_x = int(0.3 * window_width)
-    button_y = int(0.2 * window_height)
-    button_width = int(0.15 * window_width)
-    button_height = int(0.06 * window_height)
-
-    return pygame.transform.scale(image, (window_width, window_height)), button_x, button_y, button_width, button_height
-
+    return pygame.transform.scale(image, (window_width, window_height))
 
 #
 # -----------------------------------------------------------------------------------------------------------------
@@ -42,10 +35,8 @@ def scale_bg(image, window_width, window_height):
 # level selector functions
 def level1():
     print("Level 1 selected")
-    global levela
     global level
     level = Level(1)
-    levela = 1
 
     # testing purposes
     print('img', level.bg)
@@ -55,18 +46,15 @@ def level1():
     print('obstaclelist', level.obstacle_data)
     loadLevel()  # activate the loading screen sequence fade to white
 
-def level2():
-    print("Level 2 selected")
+def levels(level: int):
+    print(f"Level {level} selected")
 
-
-def level3():
-    print("Level 3 selected")
 
 # change screen size
 def screensmall():
     global size, Width, Height, Window
     size = 'small'
-    Width, Height = 1200, 836
+    Width, Height = 1200, 771
     Window = pygame.display.set_mode((Width, Height))
     for i, button in enumerate(buttons):
         button.width = 160
@@ -77,6 +65,7 @@ def screensmall():
             break  # don't reposition screen size buttons
 
 def screenbig():
+
     global size, Width, Height, Window
     size = 'big'
     Width, Height = 1400, 900
@@ -94,7 +83,7 @@ def screenbig():
 # -----------------------------------------------------------------------------------------------------------------
 #
 
-# loading screenx`
+# loading screen
 def loadLevel():
     for i in range(0, 255, 14):  # fade to white since maze is in (vomit) light mode
         Window.fill((i, i, i))
@@ -108,8 +97,8 @@ def loadLevel():
 # initializing buttons
 
 buttons = [Button("Level 1", 120, 220, 200, 50, level1, is_level=True),
-           Button("Level 2", 120, 310, 200, 50, level2, is_level=True),
-           Button("Level 3", 120, 400, 200, 50, level3, is_level=True),
+           Button("Level 2", 120, 310, 200, 50, lambda:levels(2), is_level=True),
+           Button("Level 3", 120, 400, 200, 50, lambda:levels(3), is_level=True),
            Button('small', 400, 100, 200, 50, screensmall, is_level=False),
            Button('big', 700, 100, 200, 50, screenbig, is_level=False)]
 
@@ -129,7 +118,7 @@ FONT2 = pygame.font.Font(None, 24)  # None means default font
 
 def rendertext():
     quacker = FONT.render("quacker", True, "white")  # defining each font
-    desc = FONT2.render("a game by ayaka umbrella fans", True, "grey")
+    desc = FONT2.render("By ayaka umbrella fans— Amanda and Emilia", True, "grey")
     SR = FONT2.render("select screen size", True, "grey")
 
     Window.blit(quacker, (10, 10))  # display text
@@ -144,7 +133,8 @@ def rendertext():
 # Initialize the level
 level = None
 # main game logic, while loop to run everything
-levela = None
+size = 'big'
+
 
 def main():
     bulletslaunched = 0
@@ -184,7 +174,7 @@ def main():
         mouse_pos = pygame.mouse.get_pos()
         if gamemode == 1:  # in the game
             speedmultiplier = 10  # can change!!
-            level.draw(Window)
+            level.draw(Window, size)
 
             # for bullet in Level.bullets:
             #     if bullet.win:

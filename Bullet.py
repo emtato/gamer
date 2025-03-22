@@ -56,19 +56,24 @@ class Bullet:
         self.x += self.speed_x
         self.y += self.speed_y
 
-    #change collides to bounding box way more efficient
     def collides(self, screen, new_x, new_y):
-        for i in range(int(self.RADIUS/3), self.RADIUS):
-            for j in range(int(self.RADIUS/3), self.RADIUS): #o(n^2) algorithm inneficient :nerd:
-                if (math.sqrt((self.RADIUS - i) ** 2 + (self.RADIUS - j) ** 2)) <= self.RADIUS:
-                    clr = screen.get_at((round(new_x - self.RADIUS + i), round(new_y - self.RADIUS + j)))
-                    if clr == (0, 0, 0):  # Check if the color is black
-                        pygame.mixer.Sound.play(bounce) #this sound gets anoying as shit very fast find another or no sound at all?
-                        pygame.mixer.music.stop()
-                        return True
-                    if clr == (114, 245, 74): #check if bullet touches ending square = win
-                        self.win = True
-                        print('win!!!! :DDD')
+        r_sq = self.RADIUS ** 2
+        for i in range(int(self.RADIUS / 3), self.RADIUS):
+            for j in range(int(self.RADIUS / 3), self.RADIUS):
+                dx = self.RADIUS - i
+                dy = self.RADIUS - j
+                if dx * dx + dy * dy <= r_sq:
+                    px = round(new_x - self.RADIUS + i)
+                    py = round(new_y - self.RADIUS + j)
+                    if 0 <= px < screen.get_width() and 0 <= py < screen.get_height():
+                        clr = screen.get_at((px, py))
+                        if clr == (0, 0, 0):  # Check if the color is black
+                            pygame.mixer.Sound.play(bounce) #this sound gets anoying as shit very fast find another or no sound at all?
+                            pygame.mixer.music.stop()
+                            return True
+                        if clr == (114, 245, 74): #check if bullet touches ending square = win
+                            self.win = True
+                            print('win!!!! :DDD')
         return False
 
     def draw(self, screen):

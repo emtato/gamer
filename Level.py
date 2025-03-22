@@ -21,7 +21,6 @@ class Level:
 
     def __init__(self, level_num):
         self.level_num = level_num
-
         # read data from file
         file_name = "data"
         file = open(file_name, "r")
@@ -63,11 +62,13 @@ class Level:
         rotated_rect = rotated_image.get_rect(center=pos)  # Keep the center at the circle's center
         return rotated_image, rotated_rect
 
-    def draw(self, screen):
+    def draw(self, screen, size):
 
-        # car = pygame.transform.scale(self.bg, (Width, Height))
-        car = pygame.transform.scale(self.bg, (1400, 900))  # assume large screen for now
+        car = pygame.transform.scale(self.bg, (1400 if size == 'big' else 1200, 900  if size == 'big' else 771))  # assume large screen for now
         screen.blit(car, (0, 0))
+        if size == 'small':
+            self.playerX = int(self.playerX * (1200 / 1400))
+            self.playerY = int(self.playerY * (771 / 900))
         pygame.draw.circle(screen, 'grey', [int(self.playerX), int(self.playerY)], 30)
 
         # resizing window correctly in levels, size = input variable in function
