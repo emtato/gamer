@@ -27,6 +27,7 @@ class Bullet:
     y: int
     speed_x: float
     speed_y: float
+    win: bool
 
     def __init__(self, element, x, y, dx, dy):
         self.element = element
@@ -35,6 +36,7 @@ class Bullet:
         self.y = y
         self.speed_x = dx
         self.speed_y = dy
+        self.win = False
 
     def __repr__(self):
         return f"elm={self.element}"
@@ -64,6 +66,9 @@ class Bullet:
                         pygame.mixer.Sound.play(bounce) #this sound gets anoying as shit very fast find another or no sound at all?
                         pygame.mixer.music.stop()
                         return True
+                    if clr == (114, 245, 74): #check if bullet touches ending square = win
+                        self.win = True
+                        print('win!!!! :DDD')
         return False
 
     def draw(self, screen):

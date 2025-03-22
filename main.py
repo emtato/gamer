@@ -15,7 +15,6 @@ clock = pygame.time.Clock()
 #
 # -----------------------------------------------------------------------------------------------------------------
 #
-from click._compat import WIN
 
 pygame.font.init()  # intializes fonts to display text
 
@@ -28,7 +27,13 @@ pygame.display.set_caption("qwack")
 # duck_image = pygame.image.load('duck.png')  # reference for turret later
 
 def scale_bg(image, window_width, window_height):
-    return pygame.transform.scale(image, (window_width, window_height))
+    button_x = int(0.3 * window_width)
+    button_y = int(0.2 * window_height)
+    button_width = int(0.15 * window_width)
+    button_height = int(0.06 * window_height)
+
+    return pygame.transform.scale(image, (window_width, window_height)), button_x, button_y, button_width, button_height
+
 
 #
 # -----------------------------------------------------------------------------------------------------------------
@@ -59,24 +64,37 @@ def level3():
 
 # change screen size
 def screensmall():
-    global size
+    global size, Width, Height, Window
     size = 'small'
     Width, Height = 1200, 836
     Window = pygame.display.set_mode((Width, Height))
-
+    for i, button in enumerate(buttons):
+        button.width = 160
+        button.height = 40
+        button.x = 100  # move buttons more to the left
+        button.y = 200 + i * 70  # tighter vertical spacing
+        if i > len(buttons) - 4:
+            break  # don't reposition screen size buttons
 
 def screenbig():
-    global size
+    global size, Width, Height, Window
     size = 'big'
     Width, Height = 1400, 900
     Window = pygame.display.set_mode((Width, Height))
     pygame.display.set_caption("qwack")
+    for i, button in enumerate(buttons):
+        button.width = 200
+        button.height = 50
+        button.x = 120  # move buttons more to the left
+        button.y = 220 + i * 90  # more vertical spacing
+        if i > len(buttons) - 4:
+            break  # don't reposition screen size buttons
 
 #
 # -----------------------------------------------------------------------------------------------------------------
 #
 
-# loading screen
+# loading screenx`
 def loadLevel():
     for i in range(0, 255, 14):  # fade to white since maze is in (vomit) light mode
         Window.fill((i, i, i))
@@ -89,9 +107,9 @@ def loadLevel():
 
 # initializing buttons
 
-buttons = [Button("Level 1", 300, 200, 200, 50, level1, is_level=True),
-           Button("Level 2", 300, 300, 200, 50, level2, is_level=True),
-           Button("Level 3", 300, 400, 200, 50, level3, is_level=True),
+buttons = [Button("Level 1", 120, 220, 200, 50, level1, is_level=True),
+           Button("Level 2", 120, 310, 200, 50, level2, is_level=True),
+           Button("Level 3", 120, 400, 200, 50, level3, is_level=True),
            Button('small', 400, 100, 200, 50, screensmall, is_level=False),
            Button('big', 700, 100, 200, 50, screenbig, is_level=False)]
 
@@ -147,7 +165,7 @@ def main():
             if gamemode <= 0:  # in the main menu
                 for button in buttons:  # Check each button for clicks
                     if event.type == pygame.MOUSEBUTTONDOWN:
-                        if button.is_clicked(event):  # is it?
+                        if button.is_clicked(event, Window):  # is it?
                             if button.is_level:
                                 gamemode = 1
                             button.callback()  # if button is pressed, button.callback (from button class,
@@ -167,6 +185,12 @@ def main():
         if gamemode == 1:  # in the game
             speedmultiplier = 10  # can change!!
             level.draw(Window)
+
+            # for bullet in Level.bullets:
+            #     if bullet.win:
+            #         print('fouind you!!')
+
+
             # calculate dx and dy based on mouse pos vs player pos
             for event in pygame.event.get():  # Process all events in the event queue
                 if event.type == pygame.QUIT:  # If the close button is clicked
@@ -196,6 +220,7 @@ def main():
                     bullet = Bullet(0, playerx, playery, differencex, differencey)
                     Level.launch(level, bulletslaunched, speedmultiplier * differencex, speedmultiplier * differencey)
                     bulletslaunched+=1
+
                     '''avoid drawing all bullets at once (happens in Level.py. currently on level.draw, it iterates bullets list and draws all
                     
                     
@@ -213,7 +238,7 @@ def main():
 
             for button in buttons:
                 if button.tick == 0:  # when tick = 0, it means button not pressed. so it colors it grey for hover
-                    button.is_hovered(mouse_pos)  # Update button hover state based on mouse position
+                    button.is_hovered(mouse_pos,Window)  # Update button hover state based on mouse position
                     button.draw(Window)
                 else:
                     button.tick -= 1  # tick isnt 0 so it counts down a timer until it becomes 0 to resume the normal

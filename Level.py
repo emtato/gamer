@@ -92,4 +92,5 @@ class Level:
             bullet.draw(screen)
 
     def launch(self, bulletslaunched, dx, dy):
-        self.bullets[bulletslaunched].speed_x, self.bullets[bulletslaunched].speed_y = dx, dy
+        if len(self.bullets) > bulletslaunched:
+            self.bullets[bulletslaunched].speed_x, self.bullets[bulletslaunched].speed_y = dx, dy
