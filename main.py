@@ -22,11 +22,13 @@ Width, Height = 1400, 900
 Window = pygame.display.set_mode((Width, Height))
 pygame.display.set_caption("qwack")
 
+
 # move to Level.py
 # duck_image = pygame.image.load('duck.png')  # reference for turret later
 
 def scale_bg(image, window_width, window_height):
     return pygame.transform.scale(image, (window_width, window_height))
+
 
 #
 # -----------------------------------------------------------------------------------------------------------------
@@ -36,7 +38,7 @@ def scale_bg(image, window_width, window_height):
 def level1():
     print("Level 1 selected")
     global level
-    level = Level(1)
+    level = Level(1, size)
 
     # testing purposes
     print('img', level.bg)
@@ -45,6 +47,7 @@ def level1():
     print('bullets', level.bullets)
     print('obstaclelist', level.obstacle_data)
     loadLevel()  # activate the loading screen sequence fade to white
+
 
 def levels(level: int):
     print(f"Level {level} selected")
@@ -64,8 +67,8 @@ def screensmall():
         if i > len(buttons) - 4:
             break  # don't reposition screen size buttons
 
-def screenbig():
 
+def screenbig():
     global size, Width, Height, Window
     size = 'big'
     Width, Height = 1400, 900
@@ -79,6 +82,7 @@ def screenbig():
         if i > len(buttons) - 4:
             break  # don't reposition screen size buttons
 
+
 #
 # -----------------------------------------------------------------------------------------------------------------
 #
@@ -90,6 +94,7 @@ def loadLevel():
         pygame.display.flip()
         clock.tick(20)
 
+
 #
 # -----------------------------------------------------------------------------------------------------------------
 #
@@ -97,8 +102,8 @@ def loadLevel():
 # initializing buttons
 
 buttons = [Button("Level 1", 120, 220, 200, 50, level1, is_level=True),
-           Button("Level 2", 120, 310, 200, 50, lambda:levels(2), is_level=True),
-           Button("Level 3", 120, 400, 200, 50, lambda:levels(3), is_level=True),
+           Button("Level 2", 120, 310, 200, 50, lambda: levels(2), is_level=True),
+           Button("Level 3", 120, 400, 200, 50, lambda: levels(3), is_level=True),
            Button('small', 400, 100, 200, 50, screensmall, is_level=False),
            Button('big', 700, 100, 200, 50, screenbig, is_level=False)]
 
@@ -110,6 +115,7 @@ buttons = [Button("Level 1", 120, 220, 200, 50, level1, is_level=True),
 FONT = pygame.font.SysFont("arial", 30)
 FONT2 = pygame.font.Font(None, 24)  # None means default font
 
+
 # test
 
 #
@@ -118,13 +124,24 @@ FONT2 = pygame.font.Font(None, 24)  # None means default font
 
 def rendertext():
     quacker = FONT.render("quacker", True, "white")  # defining each font
-    desc = FONT2.render("By ayaka umbrella fans— Amanda and Emilia", True, "grey")
+    desc = FONT2.render("By Amanda and Emilia", True, "grey")
     SR = FONT2.render("select screen size", True, "grey")
 
     Window.blit(quacker, (10, 10))  # display text
     Window.blit(desc, (10, 50))
     Window.blit(SR, (50, 100))
     pygame.display.update()
+
+def winwindow():
+    popup_width, popup_height = 300, 200
+    popup_x = (Width - popup_width) // 2
+    popup_y = (Height - popup_height) // 2
+
+    popup_rect = pygame.Rect(popup_x, popup_y, popup_width, popup_height)
+    pygame.draw.rect(Window, (240, 240, 240), popup_rect)  # light grey popup
+    pygame.draw.rect(Window, (100, 100, 100), popup_rect, 4)  # border
+    text = FONT.render("win :DD", True, (50, 50, 50))
+    Window.blit(text, (popup_x + 60, popup_y + 80))
 
 #
 # -----------------------------------------------------------------------------------------------------------------
@@ -176,10 +193,12 @@ def main():
             speedmultiplier = 10  # can change!!
             level.draw(Window, size)
 
-            # for bullet in Level.bullets:
-            #     if bullet.win:
-            #         print('fouind you!!')
-
+            if any(bul.win for bul in level.bullets):
+                print('fouind you!! :DD')
+                winwindow()
+                pygame.display.update()
+                time.sleep(1.3)
+                gamemode = 0
 
             # calculate dx and dy based on mouse pos vs player pos
             for event in pygame.event.get():  # Process all events in the event queue
@@ -209,9 +228,10 @@ def main():
 
                     bullet = Bullet(0, playerx, playery, differencex, differencey)
                     Level.launch(level, bulletslaunched, speedmultiplier * differencex, speedmultiplier * differencey)
-                    bulletslaunched+=1
+                    bulletslaunched += 1
 
-                    '''avoid drawing all bullets at once (happens in Level.py. currently on level.draw, it iterates bullets list and draws all
+                    '''avoid drawing all bullets at once (happens in Level.py. currently on level.draw, it iterates 
+                    bullets list and draws all
                     
                     
                     code in progress for this goal:
@@ -219,7 +239,8 @@ def main():
                      bulletlist = level.bullets
                     if bulletslaunched < len(bulletlist):
                         bullet = Bullet(bulletlist[bulletslaunched].element, playerx, playery, differencex, differencey)
-                        Level.launch(level, bulletslaunched, speedmultiplier * differencex, speedmultiplier * differencey)
+                        Level.launch(level, bulletslaunched, speedmultiplier * differencex, speedmultiplier * 
+                        differencey)
                         bulletslaunched+=1
                         bullet.draw(Window)
                     '''
@@ -228,23 +249,23 @@ def main():
 
             for button in buttons:
                 if button.tick == 0:  # when tick = 0, it means button not pressed. so it colors it grey for hover
-                    button.is_hovered(mouse_pos,Window)  # Update button hover state based on mouse position
+                    button.is_hovered(mouse_pos, Window)  # Update button hover state based on mouse position
                     button.draw(Window)
                 else:
                     button.tick -= 1  # tick isnt 0 so it counts down a timer until it becomes 0 to resume the normal
                     # color.
                     button.draw(Window)
                     button.color = (100, 100, 100)  # temporary darker button to confirm you clicked button
-            rendertext()
-            # Render main menu text and subtitle. usually do this last otherwise might cause artifacts/flickering
-            #but, if in rendertext the display update is removed, rendertext func call can be placed on top too.
-            #probably has to do with how display update causes that if its not at the end of buttons being drawn?
-
+            rendertext()  # Render main menu text and subtitle. usually do this last otherwise might cause
+            # artifacts/flickering  # but, if in rendertext the display update is removed, rendertext func call can
+            # be placed on top too.  # probably has to do with how display update causes that if its not at the end
+            # of buttons being drawn?
 
         pygame.display.flip()  # Update the display with the drawn frame
         clock.tick(60)  # fps limit of 60 FPS so you dont burn your customers laptop
 
     pygame.quit()  # Quit pygame when the loop exits
+
 
 #
 # -----------------------------------------------------------------------------------------------------------------

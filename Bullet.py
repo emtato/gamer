@@ -73,7 +73,6 @@ class Bullet:
                             return True
                         if clr == (114, 245, 74): #check if bullet touches ending square = win
                             self.win = True
-                            print('win!!!! :DDD')
         return False
 
     def draw(self, screen):

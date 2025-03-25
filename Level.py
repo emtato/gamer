@@ -18,11 +18,10 @@ class Level:
     bullet_poof: int
     obstacle_data: list
     duck_image = pygame.image.load('duck.png')
-    shifted: bool
 
-    def __init__(self, level_num):
+    def __init__(self, level_num, size):  # Added size parameter
         self.level_num = level_num
-        self.shifted = False
+
         # read data from file
         file_name = "data"
         file = open(file_name, "r")
@@ -35,6 +34,9 @@ class Level:
         self.bg = pygame.image.load(bg_img_filename)
         self.playerX = int(lst[1])
         self.playerY = int(lst[2])
+        if size == 'small':
+            self.playerX = int(self.playerX * (1200 / 1400))
+            self.playerY = int(self.playerY * (771 / 900))
         bullet_data = str(lst[3])
         self.bullets = [Bullet(i, self.playerX, self.playerY, 0, 0) for i in range(8) for j in
                         range(int(bullet_data[i]))]
@@ -44,44 +46,14 @@ class Level:
         for i in range(len(obstacles) // 3):
             self.obstacle_data.append([obstacles[i * 3], obstacles[i * 3 + 1], obstacles[i * 3 + 2]])
 
-        # testing - delete later  # self.bullets[9].speed_x = self.bullets[9].SPEED  # self.bullets[9].speed_y =   #
-        # self.bullets[9].SPEED
-
-    # self.bullets[9].speed_x, self.bullets[9].speed_y = 4, 9 #i have no idea what SPEED does or what bullets list is
-
-    """ move to main.py
-    def printData(self):
-        print('img', self.bg)
-        print('x', self.playerX)
-        print('y', self.playerY)
-        print('bullets', self.bullets)
-        print('obstaclelist', self.obstacle_data)
-        loadLevel()  # activate the loading screen sequence fade to white
-    """
-
     def rotate_image(self, image, angle, pos):
         rotated_image = pygame.transform.rotate(image, -angle)  # Rotate the image
         rotated_rect = rotated_image.get_rect(center=pos)  # Keep the center at the circle's center
         return rotated_image, rotated_rect
 
     def draw(self, screen, size):
-
         car = pygame.transform.scale(self.bg, (1400 if size == 'big' else 1200, 900  if size == 'big' else 771))  # assume large screen for now
         screen.blit(car, (0, 0))
-        if size == 'small' and not self.shifted:
-            self.playerX = int(self.playerX * (12/14))
-            self.playerY = int(self.playerY * (771/900))
-            self.shifted = True
-        pygame.draw.circle(screen, 'grey', [int(self.playerX), int(self.playerY)], 30)
-
-        # resizing window correctly in levels, size = input variable in function
-        '''  if size == 'big':
-                    car = pygame.transform.scale(self.bg, (1400, 900))  # assume large screen for now
-                    screen.blit(car, (0, 0))
-                else:
-                    car = pygame.transform.scale(self.bg, (1200, 836))  # assume large screen for now
-                    screen.blit(car, (0, 0))
-        '''
         mousx, mousy = pygame.mouse.get_pos()
         locplayerx = int(self.playerX)
         locplayery = int(self.playerY)
