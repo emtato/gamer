@@ -21,6 +21,7 @@ pygame.font.init()  # intializes fonts to display text
 Width, Height = 1400, 900
 Window = pygame.display.set_mode((Width, Height))
 pygame.display.set_caption("qwack")
+puppy = True
 
 
 # move to Level.py
@@ -101,9 +102,9 @@ def loadLevel():
 
 # initializing buttons
 
-buttons = [Button("Level 1", 120, 220, 200, 50, level1, is_level=True),
-           Button("Level 2", 120, 310, 200, 50, lambda: levels(2), is_level=True),
-           Button("Level 3", 120, 400, 200, 50, lambda: levels(3), is_level=True),
+buttons = [Button("Level 1", 120, 220, 200, 50, level1, is_level=puppy),
+           Button("Level 2", 120, 310, 200, 50, lambda: levels(2), is_level=puppy),
+           Button("Level 3", 120, 400, 200, 50, lambda: levels(3), is_level=puppy),
            Button('small', 400, 100, 200, 50, screensmall, is_level=False),
            Button('big', 700, 100, 200, 50, screenbig, is_level=False)]
 
@@ -132,7 +133,8 @@ def rendertext():
     Window.blit(SR, (50, 100))
     pygame.display.update()
 
-def winwindow():
+
+def winwindow(win):
     popup_width, popup_height = 300, 200
     popup_x = (Width - popup_width) // 2
     popup_y = (Height - popup_height) // 2
@@ -140,8 +142,9 @@ def winwindow():
     popup_rect = pygame.Rect(popup_x, popup_y, popup_width, popup_height)
     pygame.draw.rect(Window, (240, 240, 240), popup_rect)  # light grey popup
     pygame.draw.rect(Window, (100, 100, 100), popup_rect, 4)  # border
-    text = FONT.render("win :DD", True, (50, 50, 50))
+    text = FONT.render("win :DD" if win else "loose DD:", True, (50, 50, 50))
     Window.blit(text, (popup_x + 60, popup_y + 80))
+
 
 #
 # -----------------------------------------------------------------------------------------------------------------
@@ -154,9 +157,8 @@ size = 'big'
 
 
 def main():
-    bulletslaunched = 0
     clock = pygame.time.Clock()  # Initialize a clock to manage the frame rate
-    run = True
+    run = puppy
 
     gamemode = 0
     while run:
@@ -195,7 +197,23 @@ def main():
 
             if any(bul.win for bul in level.bullets):
                 print('fouind you!! :DD')
-                winwindow()
+                winwindow(puppy)
+                pygame.display.update()
+                time.sleep(1.3)
+                gamemode = 0
+            i = 0
+            while i < len(level.bullets):
+                bul = level.bullets[i]
+                if bul.speed_x != 0 or bul.speed_y != 0:
+                    bul.time_remaining -= 0.017
+                    if bul.time_remaining <= 0:
+                        level.bullets.remove(bul)
+                        level.bulletslaunched -= 1
+                        print('removed1')
+                        i -= 1
+                i += 1
+            if len(level.bullets) == 0:
+                winwindow(False)
                 pygame.display.update()
                 time.sleep(1.3)
                 gamemode = 0
@@ -205,6 +223,9 @@ def main():
                 if event.type == pygame.QUIT:  # If the close button is clicked
                     run = False
                     break
+                elif event.type == pygame.K_ESCAPE:
+                    print("LET ME OUT")
+                    gamemode = 0
                 if event.type == pygame.MOUSEBUTTONDOWN:  # only if mouse button down calc angle and launch bullet
                     playerx, playery = level.playerX, level.playerY
                     mousex, mousey = mouse_pos[0], mouse_pos[1]
@@ -226,9 +247,9 @@ def main():
                         differencex /= length
                         differencey /= length
 
-                    bullet = Bullet(0, playerx, playery, differencex, differencey)
-                    Level.launch(level, bulletslaunched, speedmultiplier * differencex, speedmultiplier * differencey)
-                    bulletslaunched += 1
+                    bullet = Bullet(0, playerx, playery, differencex, differencey, level.bullet_poof)
+                    Level.launch(level, speedmultiplier * differencex, speedmultiplier * differencey)
+                    level.bulletslaunched += 1
 
                     '''avoid drawing all bullets at once (happens in Level.py. currently on level.draw, it iterates 
                     bullets list and draws all
@@ -256,7 +277,7 @@ def main():
                     # color.
                     button.draw(Window)
                     button.color = (100, 100, 100)  # temporary darker button to confirm you clicked button
-            rendertext()  # Render main menu text and subtitle. usually do this last otherwise might cause
+            rendertext()  # Render main menu text and subtitle. usually do this last otherwise might cause  #  #   #
             # artifacts/flickering  # but, if in rendertext the display update is removed, rendertext func call can
             # be placed on top too.  # probably has to do with how display update causes that if its not at the end
             # of buttons being drawn?
